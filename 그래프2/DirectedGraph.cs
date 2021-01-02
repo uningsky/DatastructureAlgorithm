@@ -6,11 +6,11 @@ namespace 그래프2
 {
     public class DirectedGraph<T>
     {
-        private Dictionary<T, LinkedList<UnweightedEdge<T>>> _adjacencyList;
+        private Dictionary<T, LinkedList<T>> _adjacencyList;
 
         public DirectedGraph()
         {
-            _adjacencyList = new Dictionary<T, LinkedList<UnweightedEdge<T>>>();
+            _adjacencyList = new Dictionary<T, LinkedList<T>>();
         }
 
         public IEnumerable<T> Vertexs
@@ -30,7 +30,7 @@ namespace 그래프2
                 {
                     foreach (var edge in vertex.Value)
                     {
-                        yield return edge;
+                        yield return new UnweightedEdge<T>(vertex.Key, edge);
                     }
                 }
             }
@@ -45,7 +45,7 @@ namespace 그래프2
                 return false;
             }
 
-            _adjacencyList.Add(vertex, new LinkedList<UnweightedEdge<T>>());
+            _adjacencyList.Add(vertex, new LinkedList<T>());
             Console.WriteLine("Add Vertex: {0}", vertex);
 
             return true;
@@ -91,10 +91,9 @@ namespace 그래프2
             }
 
             // 엣지 추가 
-            var sourceEdge = new UnweightedEdge<T>(source, destination);
 
-            _adjacencyList[source].AddLast(sourceEdge);
-            Console.WriteLine("Add Edge: \n{0}", sourceEdge);
+            _adjacencyList[source].AddLast(destination);
+            Console.WriteLine("Add Edge: \n{0}", destination);
 
             return true;
         }
@@ -106,52 +105,49 @@ namespace 그래프2
                 Console.WriteLine("fail Add Edge, source 또는 destination vertex 존재 하지 않음");
                 return false;
             }
-
-            var sourceEdge = FindEdge(source, destination);
-
-            if (sourceEdge == null)
+            if (!IsExistEdge(source, destination))
             {
                 return false;
             }
 
-            if (sourceEdge != null)
-            {
-                _adjacencyList[source].Remove(sourceEdge);
-            }
+            _adjacencyList[source].Remove(destination);
 
             return true;
         }
 
-        private UnweightedEdge<T> FindEdge(T source, T destination)
+        private T FindEdge(T source, T destination)
         {
             foreach (var item in _adjacencyList[source])
             {
-                if (item.Source.Equals(source))
+                if (item.Equals(destination))
                 {
-                    if (item.Destination.Equals(destination))
-                    {
-                        return item;
-                    }
+                    return item;
                 }
             }
 
-            return null;
+            return default(T);
         }
         
         private bool IsExistEdge(T source, T destination)
         {
-            foreach (var item in _adjacencyList[source])
+            return _adjacencyList[source].Contains(destination); 
+        }
+
+        public LinkedList<T> Neighbors(T vertex)
+        {
+            if (!_adjacencyList.ContainsKey(vertex))
             {
-                if (item.Source.Equals(source))
-                {
-                    if (item.Destination.Equals(destination))
-                    {
-                        return true;
-                    }
-                }
+                return null;
             }
 
-            return false;
+            var neighbors = new LinkedList<T>();
+
+            foreach (var item in _adjacencyList[vertex])
+            {
+                neighbors.AddLast(item);
+            }
+
+            return neighbors;
         }
 
         public void Clear()

@@ -10,8 +10,80 @@ namespace 그래프2
         static void Main(string[] args)
         {
             // TestIsCycleDFS(); 
-            TestIsCycleUnionFind();
+            //TestIsCycleUnionFind();
+            TestDirectedGraph(); 
         }
+
+        static void TestDirectedGraph()
+        {
+            DirectedGraph<int> directedGraph = new DirectedGraph<int>();
+            directedGraph.AddVertex(1);
+            directedGraph.AddVertex(2);
+            directedGraph.AddVertex(3);
+
+            directedGraph.AddEdge(1, 2); 
+            directedGraph.AddEdge(2, 3); 
+            directedGraph.AddEdge(3, 1); 
+            directedGraph.AddEdge(1, 3); 
+            directedGraph.AddEdge(3, 2);
+
+            DirectedGraphBFS(directedGraph); 
+            DirectedGraphDFS(directedGraph); 
+        }
+
+        static void DirectedGraphBFS(DirectedGraph<int> graph)
+        {
+            Console.WriteLine("bfs start");
+
+            HashSet<int> visited = new HashSet<int>();
+            Queue<int> queue = new Queue<int>();
+
+            queue.Enqueue(1);
+            while (queue.Count > 0)
+            {
+                var currentVertex = queue.Dequeue();
+                Console.WriteLine(currentVertex.ToString());
+
+                foreach (var edge in graph.Neighbors(currentVertex))
+                {
+                    if (!visited.Contains(edge))
+                    {
+                        queue.Enqueue(edge);
+                        visited.Add(edge);
+                    }
+                }
+            }
+        }
+
+        static void DirectedGraphDFS(DirectedGraph<int> graph)
+        {
+
+            Console.WriteLine("dfs start");
+
+            HashSet<int> visited = new HashSet<int>();
+            Stack<int> stack = new Stack<int>();
+
+            stack.Push(1); 
+            while (stack.Count > 0)
+            {
+                var currentVertex = stack.Pop();
+                Console.WriteLine(currentVertex.ToString());
+
+                if (!visited.Contains(currentVertex))
+                {
+                    visited.Add(currentVertex);
+
+                    foreach (var edge in graph.Neighbors(currentVertex))
+                    {
+                        if (!visited.Contains(edge))
+                        {
+                            stack.Push(edge);
+                        }
+                    }
+                }
+            }
+        }
+
 
         static void TestIsCycleUnionFind()
         {
