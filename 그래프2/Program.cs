@@ -14,6 +14,15 @@ namespace 그래프2
             TestDirectedGraph(); 
         }
 
+        static void TestUnDirectedGraph()
+        {
+        }
+
+        static void UnDirectedGraphBFSWithLevel()
+        {
+            
+        }
+
         static void TestDirectedGraph()
         {
             DirectedGraph<int> directedGraph = new DirectedGraph<int>();
