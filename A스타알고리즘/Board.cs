@@ -39,7 +39,6 @@ namespace A스타알고리즘
             // 위
             if (zeroTileYIndex > 0)
             {
-                
                 var zeroMoveUpBoard = new Board((int[,])_tiles.Clone(), _dimension);
                 zeroMoveUpBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex, zeroTileYIndex - 1);
                 board.Add(zeroMoveUpBoard); 
@@ -77,6 +76,33 @@ namespace A스타알고리즘
             int temp = _tiles[sourceX, sourceY];
             _tiles[sourceX, sourceY] = _tiles[targetX, targetY];
             _tiles[targetX, targetY] = temp;
+        }
+
+        private int Manhattan(Board goalBoard)
+        {
+            if (_dimension != goalBoard._dimension)
+                throw new ArgumentException();
+
+            int distance = 0;
+
+            for (int i = 0; i < _tiles.GetLength(0); i++)
+            {
+                for (int j = 0; j < _tiles.GetLength(1); j++)
+                {
+                    for (int k = 0; k < goalBoard._tiles.GetLength(0); k++)
+                    {
+                        for (int l = 0; l < goalBoard._tiles.GetLength(1); l++)
+                        {
+                            if (_tiles[i, j] == goalBoard._tiles[k, l])
+                            {
+                                distance = Math.Abs(i - k) + Math.Abs(j - l);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return distance; 
         }
 
         public override bool Equals(object obj)
