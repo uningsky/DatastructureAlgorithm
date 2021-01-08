@@ -9,6 +9,7 @@ namespace A스타알고리즘
     {
         private int[,] _tiles;
         private int _dimension;
+        private int _manhattan = -1;
         private List<Board> _nodes = null;  
         
         public Board(int[,] tiles, int dimension)
@@ -42,34 +43,34 @@ namespace A스타알고리즘
             }
 
             // 위
-            if (zeroTileYIndex > 0)
+            if (zeroTileXIndex > 0)
             {
                 var zeroMoveUpBoard = new Board((int[,])_tiles.Clone(), _dimension);
-                zeroMoveUpBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex, zeroTileYIndex - 1);
+                zeroMoveUpBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex - 1, zeroTileYIndex);
                 board.Add(zeroMoveUpBoard); 
             }
 
             // 오른족
-            if (zeroTileXIndex < _dimension - 1)
+            if (zeroTileYIndex < _dimension - 1)
             {
                 var zeroMoveRightBoard = new Board((int[,])_tiles.Clone(), _dimension);
-                zeroMoveRightBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex + 1, zeroTileYIndex);
+                zeroMoveRightBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex, zeroTileYIndex + 1);
                 board.Add(zeroMoveRightBoard);
             }
 
             // 왼쪽
-            if (zeroTileXIndex > 0)
+            if (zeroTileYIndex > 0)
             {
                 var zeroMoveLeftBoard = new Board((int[,])_tiles.Clone(), _dimension);
-                zeroMoveLeftBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex - 1, zeroTileYIndex);
+                zeroMoveLeftBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex, zeroTileYIndex - 1);
                 board.Add(zeroMoveLeftBoard);
             }
 
             // 아래
-            if (zeroTileYIndex < _dimension - 1)
+            if (zeroTileXIndex < _dimension - 1)
             {
                 var zeroMoveDownBoard = new Board((int[,])_tiles.Clone(), _dimension);
-                zeroMoveDownBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex, zeroTileYIndex + 1);
+                zeroMoveDownBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex + 1, zeroTileYIndex);
                 board.Add(zeroMoveDownBoard);
             }
 
@@ -83,10 +84,15 @@ namespace A스타알고리즘
             _tiles[targetX, targetY] = temp;
         }
 
-        private int Manhattan(Board goalBoard)
+        public int Manhattan(Board goalBoard)
         {
             if (_dimension != goalBoard._dimension)
                 throw new ArgumentException();
+
+            if (_manhattan != -1)
+            {
+                return _manhattan; 
+            }
 
             int distance = 0;
 
@@ -94,14 +100,14 @@ namespace A스타알고리즘
             {
                 for (int j = 0; j < _tiles.GetLength(1); j++)
                 {
-                    distance = CalcDistance(goalBoard, distance, i, j);
+                    distance += CalcDistance(goalBoard, i, j);
                 }
             }
 
             return distance; 
         }
 
-        private int CalcDistance(Board goalBoard, int distance, int i, int j)
+        private int CalcDistance(Board goalBoard, int i, int j)
         {
             for (int k = 0; k < goalBoard._tiles.GetLength(0); k++)
             {
@@ -109,12 +115,12 @@ namespace A스타알고리즘
                 {
                     if (_tiles[i, j] == goalBoard._tiles[k, l])
                     {
-                        distance = Math.Abs(i - k) + Math.Abs(j - l);
+                        return Math.Abs(i - k) + Math.Abs(j - l);
                     }
                 }
             }
 
-            return distance;
+            return 0;
         }
 
         public override bool Equals(object obj)
