@@ -19,6 +19,11 @@ namespace A스타알고리즘
 
         public List<Board> Neighbors()
         {
+            if (_nodes != null)
+            {
+                return _nodes; 
+            }
+
             List<Board> board = new List<Board>(); 
 
             int zeroTileXIndex = 0;
@@ -68,7 +73,7 @@ namespace A스타알고리즘
                 board.Add(zeroMoveDownBoard);
             }
 
-            return board; 
+            return _nodes = board; 
         }
 
         private void TileSwap(int sourceX, int sourceY, int targetX, int targetY)
@@ -89,20 +94,27 @@ namespace A스타알고리즘
             {
                 for (int j = 0; j < _tiles.GetLength(1); j++)
                 {
-                    for (int k = 0; k < goalBoard._tiles.GetLength(0); k++)
-                    {
-                        for (int l = 0; l < goalBoard._tiles.GetLength(1); l++)
-                        {
-                            if (_tiles[i, j] == goalBoard._tiles[k, l])
-                            {
-                                distance = Math.Abs(i - k) + Math.Abs(j - l);
-                            }
-                        }
-                    }
+                    distance = CalcDistance(goalBoard, distance, i, j);
                 }
             }
 
             return distance; 
+        }
+
+        private int CalcDistance(Board goalBoard, int distance, int i, int j)
+        {
+            for (int k = 0; k < goalBoard._tiles.GetLength(0); k++)
+            {
+                for (int l = 0; l < goalBoard._tiles.GetLength(1); l++)
+                {
+                    if (_tiles[i, j] == goalBoard._tiles[k, l])
+                    {
+                        distance = Math.Abs(i - k) + Math.Abs(j - l);
+                    }
+                }
+            }
+
+            return distance;
         }
 
         public override bool Equals(object obj)
