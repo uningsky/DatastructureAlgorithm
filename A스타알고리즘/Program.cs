@@ -12,19 +12,20 @@ namespace A스타알고리즘
         {
             // 0 : 빈칸
             Board goalBoard = new Board(new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } });
-            Board board = Suffle(3);
+            Board startBoard = Suffle(3);
 
             // 
+            Stack<Board> path = new Stack<Board>();
             List<(Board board, int moves, int f)> openlist = new List<(Board, int, int)>();
             List<Board> closelist = new List<Board>();
-            openlist.Add((board, 0, 0 + board.Manhattan(goalBoard)));
+            openlist.Add((startBoard, 0, 0 + startBoard.Manhattan(goalBoard)));
 
             int moveCount = 0; 
 
             while (openlist.Count > 0)
             {
                 (var currentBoard, int moves, int f) = openlist[0];
-                Console.WriteLine("{0} f: ({1}) = moves({2}) + manhattan({3})", currentBoard.ToString(), f, moves, currentBoard.Manhattan(goalBoard));
+                //Console.WriteLine("{0} f: ({1}) = moves({2}) + manhattan({3})", currentBoard.ToString(), f, moves, currentBoard.Manhattan(goalBoard));
                 
                 moveCount = moves; 
                 openlist.RemoveAt(0);
@@ -33,6 +34,11 @@ namespace A스타알고리즘
                 // 현재 보드와 목표 보드가 같은지 비교 , 같으면 완료.
                 if (currentBoard.Equals(goalBoard))
                 {
+                    for (var board = currentBoard; board != null; board = board.Parent)
+                    {
+                        path.Push(board);
+                    }
+
                     break;
                 }
 
@@ -50,7 +56,13 @@ namespace A스타알고리즘
                 });
             }
 
-            Console.WriteLine(moveCount); 
+            while (path.Count > 0)
+            {
+                var board = path.Pop();
+                Console.WriteLine("{0}", board);
+
+            }
+            Console.WriteLine("move count: {0}", moveCount); 
         }
 
         private static bool IsSolvable(int[,] boardArray)
@@ -100,7 +112,7 @@ namespace A스타알고리즘
 
             Board board = new Board(boardArray);
 
-            Console.WriteLine(board.ToString()); 
+            Console.WriteLine("suffle board: \n{0}", board.ToString()); 
 
             return board; 
         }
