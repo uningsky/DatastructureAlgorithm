@@ -12,10 +12,20 @@ namespace A스타알고리즘
         private int _manhattan = -1;
         private List<Board> _nodes = null;  
         
-        public Board(int[,] tiles, int dimension)
+        public Board(int[,] tiles)
         {
+            if (tiles.Rank != 2)
+            {
+                throw new ArgumentException("2 dimension 만 지원");
+            }
+
+            if (tiles.GetLength(0) != tiles.GetLength(1))
+            {
+                throw new ArgumentException("같은 수의 열과 행만 지원");
+            }
+
             this._tiles = tiles;
-            this._dimension = dimension; 
+            this._dimension = tiles.GetLength(0); 
         }
 
         public List<Board> Neighbors()
@@ -45,7 +55,7 @@ namespace A스타알고리즘
             // 위
             if (zeroTileXIndex > 0)
             {
-                var zeroMoveUpBoard = new Board((int[,])_tiles.Clone(), _dimension);
+                var zeroMoveUpBoard = new Board((int[,])_tiles.Clone());
                 zeroMoveUpBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex - 1, zeroTileYIndex);
                 board.Add(zeroMoveUpBoard); 
             }
@@ -53,7 +63,7 @@ namespace A스타알고리즘
             // 오른족
             if (zeroTileYIndex < _dimension - 1)
             {
-                var zeroMoveRightBoard = new Board((int[,])_tiles.Clone(), _dimension);
+                var zeroMoveRightBoard = new Board((int[,])_tiles.Clone());
                 zeroMoveRightBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex, zeroTileYIndex + 1);
                 board.Add(zeroMoveRightBoard);
             }
@@ -61,7 +71,7 @@ namespace A스타알고리즘
             // 왼쪽
             if (zeroTileYIndex > 0)
             {
-                var zeroMoveLeftBoard = new Board((int[,])_tiles.Clone(), _dimension);
+                var zeroMoveLeftBoard = new Board((int[,])_tiles.Clone());
                 zeroMoveLeftBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex, zeroTileYIndex - 1);
                 board.Add(zeroMoveLeftBoard);
             }
@@ -69,7 +79,7 @@ namespace A스타알고리즘
             // 아래
             if (zeroTileXIndex < _dimension - 1)
             {
-                var zeroMoveDownBoard = new Board((int[,])_tiles.Clone(), _dimension);
+                var zeroMoveDownBoard = new Board((int[,])_tiles.Clone());
                 zeroMoveDownBoard.TileSwap(zeroTileXIndex, zeroTileYIndex, zeroTileXIndex + 1, zeroTileYIndex);
                 board.Add(zeroMoveDownBoard);
             }

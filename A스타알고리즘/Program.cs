@@ -11,7 +11,7 @@ namespace A스타알고리즘
         static void Main(string[] args)
         {
             // 0 : 빈칸
-            Board goalBoard = new Board(new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } }, 3);
+            Board goalBoard = new Board(new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } });
             Board board = Suffle(3);
 
             // 
@@ -30,8 +30,7 @@ namespace A스타알고리즘
                 openlist.RemoveAt(0);
                 closelist.Add(currentBoard);
 
-                // 현재 보드와 목표 보드가 같은지 비교 
-                // 같으면 완료. 
+                // 현재 보드와 목표 보드가 같은지 비교 , 같으면 완료.
                 if (currentBoard.Equals(goalBoard))
                 {
                     break;
@@ -99,7 +98,7 @@ namespace A스타알고리즘
         {
             int[,] boardArray = SuffleArry(col);
 
-            Board board = new Board(boardArray, col);
+            Board board = new Board(boardArray);
 
             Console.WriteLine(board.ToString()); 
 
