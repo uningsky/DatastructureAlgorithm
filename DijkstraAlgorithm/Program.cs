@@ -26,6 +26,53 @@ namespace DijkstraAlgorithm
             graph.AddEdge(4, 5, 6);
             graph.AddEdge(5, 6, 9);
 
+            HashSet<int> visited = new HashSet<int>(); 
+            Dictionary<int, int> distance = new Dictionary<int, int>();
+            Stack<int> path = new Stack<int>(); 
+
+            int sourceVertex = 1;
+            int destinationVertex = 5;
+
+            distance.Add(sourceVertex, 0);
+
+            Queue<int> queue = new Queue<int>();
+            queue.Enqueue(sourceVertex);
+
+            while (queue.Count > 0)
+            {
+                var vertex = queue.Dequeue();
+
+                if (visited.Contains(vertex))
+                {
+                    continue; 
+                }
+
+                visited.Add(vertex);
+
+                foreach (var adjacency in graph.Neighbors(vertex))
+                {
+                    var edge = graph.GetEdge(vertex, adjacency);
+
+                    if (!distance.ContainsKey(adjacency))
+                    {
+                        distance.Add(adjacency, edge.Weight + distance[vertex]);
+                    }
+                    else
+                    {
+                        if (distance[adjacency] > edge.Weight + distance[vertex])
+                        {
+                            distance[adjacency] = edge.Weight + distance[vertex];
+                        }
+                    }
+
+                    if (!visited.Contains(vertex))
+                    {
+                        queue.Enqueue(adjacency);
+                    }
+                }
+                
+            }
+
 
         }
     }

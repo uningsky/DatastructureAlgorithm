@@ -46,6 +46,23 @@ namespace 그래프2
             }
         }
 
+        public Edge<T> GetEdge(T source, T destination)
+        {
+            if (!_adjacencyList.ContainsKey(source) || !_adjacencyList.ContainsKey(destination))
+            {
+                throw new KeyNotFoundException(); 
+            }
+
+            var edge = FindEdge(source, destination);
+
+            if (edge == null)
+            {
+                throw new Exception("edge is not exist"); 
+            }
+
+            return edge; 
+        }
+
         public int VerticesCount { get => _adjacencyList.Count; }
 
         public bool AddVertex(T vertex)
