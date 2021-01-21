@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using 그래프2;
+using 우선순위큐;
 
 namespace DijkstraAlgorithm
 {
@@ -28,52 +29,91 @@ namespace DijkstraAlgorithm
 
             HashSet<int> visited = new HashSet<int>(); 
             Dictionary<int, int> distance = new Dictionary<int, int>();
-            Stack<int> path = new Stack<int>(); 
+            Dictionary<int, int> path = new Dictionary<int, int>();
 
             int sourceVertex = 1;
             int destinationVertex = 5;
 
             distance.Add(sourceVertex, 0);
 
-            Queue<int> queue = new Queue<int>();
-            queue.Enqueue(sourceVertex);
+            VertexDistance vertexDistance = new VertexDistance(sourceVertex, 0);
+
+            PriorityQueue<VertexDistance> queue = new PriorityQueue<VertexDistance>();
+            queue.Enqueue(vertexDistance);
 
             while (queue.Count > 0)
             {
-                var vertex = queue.Dequeue();
+                vertexDistance = queue.Dequeue();
 
-                if (visited.Contains(vertex))
+                if (visited.Contains(vertexDistance.Vertex))
                 {
                     continue; 
                 }
 
-                visited.Add(vertex);
+                visited.Add(vertexDistance.Vertex);
 
-                foreach (var adjacency in graph.Neighbors(vertex))
+                foreach (var adjacency in graph.Neighbors(vertexDistance.Vertex))
                 {
-                    var edge = graph.GetEdge(vertex, adjacency);
+                    var edge = graph.GetEdge(vertexDistance.Vertex, adjacency);
 
                     if (!distance.ContainsKey(adjacency))
                     {
-                        distance.Add(adjacency, edge.Weight + distance[vertex]);
+                        distance.Add(adjacency, edge.Weight + distance[vertexDistance.Vertex]);
+                        path.Add(adjacency, vertexDistance.Vertex);
                     }
                     else
                     {
-                        if (distance[adjacency] > edge.Weight + distance[vertex])
+                        if (distance[adjacency] > edge.Weight + distance[vertexDistance.Vertex])
                         {
-                            distance[adjacency] = edge.Weight + distance[vertex];
+                            distance[adjacency] = edge.Weight + distance[vertexDistance.Vertex];
+                            path[adjacency] = vertexDistance.Vertex;
                         }
                     }
 
-                    if (!visited.Contains(vertex))
+                    if (!visited.Contains(adjacency))
                     {
-                        queue.Enqueue(adjacency);
+                        queue.Enqueue(new VertexDistance(adjacency, distance[adjacency]));
                     }
                 }
-                
+
+
+                if (vertexDistance.Vertex == destinationVertex)
+                {
+                    break;
+                }
+
             }
 
+            foreach (var item in distance)
+            {
+                Console.WriteLine("vertex: {0}, distance: {1}", item.Key, item.Value);
+            }
 
+            foreach (var item in path)
+            {
+                Console.WriteLine("vertex: {0}, pre vertex: {1}", item.Key, item.Value);
+            }
         }
+
+        
+    }
+
+    public class VertexDistance : IComparable<VertexDistance>
+    {
+        public int Vertex { get; set; }
+        public int Distance { get; set; }
+
+        public VertexDistance(int vertex, int distance)
+        {
+            Vertex = vertex;
+            Distance = distance;
+        }
+
+        public int CompareTo(VertexDistance obj)
+        {
+            return Distance.CompareTo(obj.Distance);
+        }
+
+        
     }
 }
