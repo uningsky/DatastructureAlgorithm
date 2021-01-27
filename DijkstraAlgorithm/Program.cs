@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq; 
 using 그래프2;
 using 우선순위큐;
 
@@ -9,30 +11,15 @@ namespace DijkstraAlgorithm
     {
         static void Main(string[] args)
         {
-            Graph<int> graph = new Graph<int>();
-            graph.AddVertex(1);
-            graph.AddVertex(2);
-            graph.AddVertex(3);
-            graph.AddVertex(4);
-            graph.AddVertex(5);
-            graph.AddVertex(6);
+            Graph<int> graph = Initialize2();
+            
 
-            graph.AddEdge(1, 2, 7);
-            graph.AddEdge(1, 3, 9);
-            graph.AddEdge(1, 6, 14);
-            graph.AddEdge(2, 3, 10);
-            graph.AddEdge(2, 4, 15);
-            graph.AddEdge(3, 6, 2);
-            graph.AddEdge(3, 4, 11);
-            graph.AddEdge(4, 5, 6);
-            graph.AddEdge(5, 6, 9);
 
             HashSet<int> visited = new HashSet<int>(); 
             Dictionary<int, int> distance = new Dictionary<int, int>();
             Dictionary<int, int> path = new Dictionary<int, int>();
 
             int sourceVertex = 1;
-            int destinationVertex = 5;
 
             distance.Add(sourceVertex, 0);
 
@@ -76,12 +63,7 @@ namespace DijkstraAlgorithm
                     }
                 }
 
-
-                if (vertexDistance.Vertex == destinationVertex)
-                {
-                    break;
-                }
-
+                queue.RebuildHeapify();
             }
 
             foreach (var item in distance)
@@ -95,10 +77,76 @@ namespace DijkstraAlgorithm
             }
         }
 
-        
+        static Graph<int> Initialize1()
+        {
+            Graph<int> graph = new Graph<int>();
+            graph.AddVertex(1);
+            graph.AddVertex(2);
+            graph.AddVertex(3);
+            graph.AddVertex(4);
+            graph.AddVertex(5);
+            graph.AddVertex(6);
+
+            graph.AddEdge(1, 2, 7);
+            graph.AddEdge(1, 3, 9);
+            graph.AddEdge(1, 6, 14);
+            graph.AddEdge(2, 3, 10);
+            graph.AddEdge(2, 4, 15);
+            graph.AddEdge(3, 6, 2);
+            graph.AddEdge(3, 4, 11);
+            graph.AddEdge(4, 5, 6);
+            graph.AddEdge(5, 6, 9);
+
+            return graph; 
+        }
+
+        static Graph<int> Initialize2()
+        {
+            Graph<int> graph = new Graph<int>();
+            graph.AddVertex(1);
+            graph.AddVertex(2);
+            graph.AddVertex(3);
+            graph.AddVertex(4);
+            graph.AddVertex(5);
+            graph.AddVertex(6);
+
+            graph.AddEdge(1, 2, 10);
+            graph.AddEdge(1, 3, 30);
+            graph.AddEdge(1, 4, 15);
+            graph.AddEdge(2, 5, 20);
+            graph.AddEdge(3, 4, 5);
+            graph.AddEdge(3, 6, 5);
+            graph.AddEdge(4, 6, 20);
+            graph.AddEdge(5, 6, 20);
+
+            return graph;
+        }
+
+        static Graph<int> Initialize3()
+        {
+            Graph<int> graph = new Graph<int>();
+            graph.AddVertex(1);
+            graph.AddVertex(2);
+            graph.AddVertex(3);
+            graph.AddVertex(4);
+            graph.AddVertex(5);
+            graph.AddVertex(6);
+
+            graph.AddEdge(1, 2, 6);
+            graph.AddEdge(1, 3, 3);
+            graph.AddEdge(2, 3, 2);
+            graph.AddEdge(2, 4, 5);
+            graph.AddEdge(3, 4, 3);
+            graph.AddEdge(3, 5, 4);
+            graph.AddEdge(4, 5, 2);
+            graph.AddEdge(4, 6, 3);
+            graph.AddEdge(5, 6, 5);
+
+            return graph;
+        }
     }
 
-    public class VertexDistance : IComparable<VertexDistance>
+    public class VertexDistance : IComparable<VertexDistance>, IEquatable<VertexDistance>
     {
         public int Vertex { get; set; }
         public int Distance { get; set; }
@@ -114,6 +162,29 @@ namespace DijkstraAlgorithm
             return Distance.CompareTo(obj.Distance);
         }
 
-        
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj as VertexDistance);
+        }
+
+        public bool Equals(VertexDistance other)
+        {
+            if (Object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (Vertex.Equals(other.Vertex))
+            {
+                return true; 
+            }
+
+            return false; 
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

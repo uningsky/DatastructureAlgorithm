@@ -58,37 +58,61 @@ namespace 우선순위큐
 
         private void SyncDown()
         {
-            int parentIndex = 0;
+            SyncDown(0, _pq.Count - 1); 
+        }
+
+        private void SyncDown(int startIndex, int lastIndex)
+        {
+            int parentIndex = startIndex;
 
             while (true)
             {
                 int leftChildIndex = 2 * parentIndex + 1;
-                int rightChildIndex = 2 * parentIndex + 2;
+                int rightChildIndex = leftChildIndex + 1;
 
-                if (leftChildIndex > _pq.Count - 1)
+                if (leftChildIndex > lastIndex)
                 {
                     break; 
                 }
 
-                if (leftChildIndex == _pq.Count - 1)
-                {
-                    if (_pq[parentIndex].CompareTo(_pq[leftChildIndex]) > 0)
-                    {
-                        Swap(parentIndex, leftChildIndex);
-                    }
-                    break;
-                }
+                int compareTarget;
 
-                if (_pq[leftChildIndex].CompareTo(_pq[rightChildIndex]) < 0)
+                if (rightChildIndex <= lastIndex)
                 {
-                    Swap(parentIndex, leftChildIndex);
-                    parentIndex = leftChildIndex; 
+                    if (_pq[leftChildIndex].CompareTo(_pq[rightChildIndex]) < 0)
+                    {
+                        compareTarget = leftChildIndex; 
+                    }
+                    else
+                    {
+                        compareTarget = rightChildIndex;
+                    }
                 }
                 else
                 {
-                    Swap(parentIndex, rightChildIndex);
-                    parentIndex = rightChildIndex;
+                    compareTarget = leftChildIndex; 
                 }
+
+                if (_pq[parentIndex].CompareTo(_pq[compareTarget]) > 0)
+                {
+                    Swap(parentIndex, compareTarget);
+                    parentIndex = compareTarget;
+                }
+                else
+                {
+                    break; 
+                }
+            }
+        }
+
+        public void RebuildHeapify()
+        {
+            int startIndex = _pq.Count / 2;
+            int lastIndex = _pq.Count - 1; 
+
+            for (int i = startIndex; i >= 0; i--)
+            {
+                SyncDown(startIndex, lastIndex);
             }
         }
 
