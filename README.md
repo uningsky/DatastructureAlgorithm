@@ -10,3 +10,7 @@ https://ericbackhage.net/c/how-to-design-a-priority-queue-in-c/
 
 slider puzzle
 https://coursera.cs.princeton.edu/algs4/assignments/8puzzle/specification.php
+
+combination
+https://docs.microsoft.com/en-us/archive/msdn-magazine/2004/july/using-combinations-to-improve-your-software-test-case-generation
+
