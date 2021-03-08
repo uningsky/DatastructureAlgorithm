@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A스타알고리즘", "A스
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "우선순위큐", "우선순위큐\우선순위큐.csproj", "{3356C4F0-C152-41FD-9CBA-00F28C76A402}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DijkstraAlgorithm", "DijkstraAlgorithm\DijkstraAlgorithm.csproj", "{51701DCA-30CE-4B62-AB7F-903035BE27A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DijkstraAlgorithm", "DijkstraAlgorithm\DijkstraAlgorithm.csproj", "{51701DCA-30CE-4B62-AB7F-903035BE27A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
