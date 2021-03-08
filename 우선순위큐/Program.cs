@@ -6,6 +6,40 @@ namespace 우선순위큐
     {
         static void Main(string[] args)
         {
+            PriorityQueue(); 
+            //MaxHeap(); 
+        }
+
+        static void MaxHeap()
+        {
+            BinaryMaxHeap binaryMaxHeap = new BinaryMaxHeap();
+
+            binaryMaxHeap.Add(1);
+            binaryMaxHeap.Add(3);
+            binaryMaxHeap.Add(4);
+            binaryMaxHeap.Add(10);
+            binaryMaxHeap.Add(20); 
+            binaryMaxHeap.Add(8); 
+            binaryMaxHeap.Add(9); 
+            binaryMaxHeap.Add(30); 
+            binaryMaxHeap.Add(5);
+
+            for (int i = 0; i < binaryMaxHeap.Count; i++)
+            {
+                Console.WriteLine("{0}", binaryMaxHeap[i]);
+            }
+
+            Console.WriteLine("extract max: {0}", binaryMaxHeap.ExtractMax());
+
+            for (int i = 0; i < binaryMaxHeap.Count; i++)
+            {
+                Console.WriteLine("{0}", binaryMaxHeap[i]);
+            }
+        }
+
+
+        static void PriorityQueue()
+        {
             SimplePriorityQueue<int> simplePriorityQueue = new SimplePriorityQueue<int>();
             simplePriorityQueue.Enqueue(2);
             simplePriorityQueue.Enqueue(3);
@@ -18,7 +52,7 @@ namespace 우선순위큐
 
             Console.WriteLine("========= simple PriorityQueue =========");
             Console.WriteLine(string.Join(",", simplePriorityQueue));
-            
+
             Console.WriteLine("enqueue 1");
             simplePriorityQueue.Enqueue(1);
 
@@ -54,7 +88,7 @@ namespace 우선순위큐
 
             Console.WriteLine("dequeue");
 
-            while(priorityQueue.Count > 0)
+            while (priorityQueue.Count > 0)
             {
                 var value = priorityQueue.Dequeue();
 

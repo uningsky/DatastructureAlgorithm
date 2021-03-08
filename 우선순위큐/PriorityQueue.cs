@@ -39,7 +39,7 @@ namespace 우선순위큐
         private void BubbleUp()
         {
             int index = _pq.Count - 1;
-            int parentIndex = index / 2;
+            int parentIndex = (index - 1) / 2;
 
             while (index > 0 && _pq[index].CompareTo(_pq[parentIndex]) < 0)
             {
