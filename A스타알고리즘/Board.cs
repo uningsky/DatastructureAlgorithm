@@ -137,7 +137,7 @@ namespace A스타알고리즘
 
         public override bool Equals(object obj)
         {
-            return base.Equals(obj as Board);
+            return this.Equals(obj as Board);
         }
 
         public bool Equals(Board other)
